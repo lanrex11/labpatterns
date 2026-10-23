@@ -8,19 +8,24 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import domain.Covid19Pacient;
 import domain.Symptom;
 
 import javax.swing.JLabel;
 
-public class PacientObserverGUI extends JFrame{
+public class PacientObserverGUI extends JFrame implements Observer{
 
 	private JPanel contentPane;
 	private final JLabel symptomLabel = new JLabel("");
+	private Observable observableDatuak;
 
 	/**
 	 * Create the frame.
 	 */
-	public PacientObserverGUI() {
+	public PacientObserverGUI(Observable obs) {
+		observableDatuak = obs;
+		//Datuei esan suskribatu nahi dugula
+		obs.addObserver(this);
 		setTitle("Pacient symptoms");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(650, 100, 200, 300);
@@ -32,6 +37,24 @@ public class PacientObserverGUI extends JFrame{
 		contentPane.add(symptomLabel);
 		symptomLabel.setText("Still no symptoms");
 		this.setVisible(true);
+
+	}
+
+	@Override
+	public void update(Observable datuak, Object arg1) {
+		Covid19Pacient p=(Covid19Pacient ) datuak;
+		String s="<html> Pacient: <b>"+p.getName()+"</b> <br>";
+		s=s+"Covid impact: <b>"+p.covidImpact()+"</b><br><br>";
+		s=s+" _____________________ <br> Symptoms: <br>";
+		Iterator<Symptom> i=p.getSymptoms().iterator();
+		Symptom p2;
+		while (i.hasNext()) {
+			p2=i.next();
+			s=s+ " - " + p2.toString()+", "+p.getWeight(p2)+"<br>";
+		}
+		s=s+"</html>";
+		symptomLabel.setText(s);
+
 	}
 
 }
