@@ -27,7 +27,6 @@ public class Main {
 		gui.setSize(new Dimension(300,200));
 		gui.setVisible(true);
 		System.out.println(gui);
-		System.out.println("HOLA");
 		
 	}
 
